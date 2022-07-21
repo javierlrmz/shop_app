@@ -10,40 +10,36 @@ class LoginScreen extends StatelessWidget {
     final deviceSize = MediaQuery.of(context).size;
     return Scaffold(
       body: Stack(
-        children: [
-          // Fondo azul
-          Container(
-            width: double.infinity,
-            height: double.infinity,
-            decoration: BoxDecoration(
-              color: Colors.cyanAccent),
-              ),
+        children: const [
+          // FONDO
+          _Background()
 
-          // CARD
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SingleChildScrollView(
-                child: Container(
-                  width: double.infinity,
-                  height: deviceSize.height,
-                  
-                  child: Stack(
-                    children: [
-                      Center(
-                        child: Container(
-                          width: double.infinity,
-                          height: 200,
-                          color: Colors.white,
-                        ),
-                      )
-                    ],
-                  )),
-              )
-            ],
-          )
+          
         ]
         ),
+    );
+  }
+}
+
+class _Background extends StatelessWidget {
+  const _Background({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      height: double.infinity,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.bottomRight,
+          colors: [
+            Colors.lightBlue.shade500,
+            Colors.lightBlue.shade700,
+          ]
+        )
+      ),
     );
   }
 }

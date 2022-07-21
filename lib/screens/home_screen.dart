@@ -10,8 +10,6 @@ class HomeScreen extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-
-    final size = MediaQuery.of(context).size;
   
     final productService = Provider.of<ProductService>(context);
     final List productList = productService.products;

@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:shop_app/models/products_model.dart';
-import 'package:shop_app/services/product_service.dart';
 
 class ProductCard extends StatelessWidget {
 
-  ProductCard ( {required this.producto});
-  Product producto;
+  const ProductCard ( {Key? key, required this.producto}) : super(key: key);
+  final Product producto;
   
   @override
   Widget build(BuildContext context) {
-
-    final size = MediaQuery.of(context).size;
     
     return Padding(
       padding: const EdgeInsets.only(top: 20, bottom:10 ),
@@ -37,7 +33,7 @@ class ProductCard extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20),
               child: producto.imagen == null
-              ? Center(child: Container(child: const CircularProgressIndicator())) 
+              ? const Center(child: CircularProgressIndicator()) 
               : FadeInImage(
                 fit: BoxFit.cover,
                 placeholder: const NetworkImage('https://via.placeholder.com/500'),
@@ -56,7 +52,7 @@ class ProductCard extends StatelessWidget {
             height: 40,
             
             child: Center(
-              child: Text('\$ ${producto.precio}', style: TextStyle(color: Colors.white, fontSize: 17),
+              child: Text('\$ ${producto.precio}', style: const TextStyle(color: Colors.white, fontSize: 17),
               ),
             )
           ),

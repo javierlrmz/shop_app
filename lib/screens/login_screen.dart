@@ -1,5 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:shop_app/extensions/validate_extension.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -37,7 +39,6 @@ class ScrollArea extends StatelessWidget {
 
             const SizedBox(height: 30),
             // BOTON INICIAR SESIÓN
-            ElasticIn(child: const SingUpButton()),
 
             SizedBox(height: mediaSize.height * 0.1),
           ],
@@ -56,7 +57,7 @@ class _LoginCard extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Container(
         width: mediaSize.width,
-        height: mediaSize.height * 0.46,
+        height: mediaSize.height * 0.6,
         decoration: BoxDecoration(
           boxShadow: const [
                     BoxShadow(
@@ -74,75 +75,132 @@ class _LoginCard extends StatelessWidget {
   }
 }
 
-class _SingForm extends StatelessWidget {
+class _SingForm extends StatefulWidget {
 
   @override
+  State<_SingForm> createState() => _SingFormState();
+}
+
+class _SingFormState extends State<_SingForm> {
+  @override
   Widget build(BuildContext context) {
+    final _formKey = GlobalKey<FormState>();
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
         children: [
           Form(
+            key: _formKey,
             child: Column(
               children: [
                 const SizedBox(height:10),
                 const Icon(Icons.person_pin, size: 100),
-
                 const Text('Iniciar Sesión', 
                   style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
                 const SizedBox(height: 30),
-
                 // CORREO
-                TextFormField(
-                  decoration: InputDecoration(
-                    icon: const Icon(Icons.email),
-                    iconColor: Colors.lightBlue.shade500,
-                    labelText: 'Correo',
-                    helperText: 'Introduzca su correo electronico personal',
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(20), borderSide: const BorderSide(width: 10, color: Colors.black54)),
-                    focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(20), borderSide: BorderSide(width: 3, color: Colors.lightBlue.shade500)),
-                    
-                  ),
+                CustomFormField(
+                  helperText: 'Email@email.com',
+                  icon: Icons.email,
+                  labelText: 'Ingrese su correo electronico',
+                  validator: (value){
+                    if (!value!.isValidEmail) {
+                      return 'Ingresa un correo válido';
+                    }
+                  },
+                  
                 ),
-
                 const SizedBox(height: 20),
-
                 // CONTRASEÑA
-                TextFormField(
-                  decoration: InputDecoration(
-                    icon: const Icon(Icons.lock_outlined),
-                    iconColor: Colors.lightBlue.shade500,
-                    helperText: 'Ingrese 8 carácteres o más',
-                    labelText: 'Contraseña',
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(20), borderSide: const BorderSide(width: 10, color: Colors.black54)),
-                    focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(20), borderSide: BorderSide(width: 3, color: Colors.lightBlue.shade500)),
-                    
-                  ),
+                CustomFormField(
+                  helperText: '******',
+                  icon: Icons.lock_open_sharp,
+                  labelText: 'Ingrese su contraseña',
+                  validator: (value){
+                    if (!value!.isValidPassword) {
+                      return 'Ingrese una contraseña de almenos 8 caracteres';
+                    }
+                  },
                 ),
-                const SizedBox(height: 15,),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
+                const SizedBox(height: 15),
+                const ForgetPassWidget(),
+                const SizedBox(height: 20),
+                
+                SingUpButton(
+                  onPressed: () { 
+                    if (_formKey.currentState!.validate()) {
+                      print('${_formKey.currentState!.validate()}');
+                      Navigator.pushReplacementNamed(context, 'home');
 
-                    TextButton(
-                      style: const ButtonStyle(tapTargetSize: MaterialTapTargetSize.shrinkWrap),
-                      onPressed: (){},
-                      child: const Text('¿Olvidaste tu contraseña?')
-                      ),
-                    const Text('/'),
-                    TextButton(
-                      style: const ButtonStyle(tapTargetSize: MaterialTapTargetSize.shrinkWrap),
-                      onPressed: (){},
-                      child: const Text('Crear cuenta')
-                    ),                  ],
-                ),
-
+                    }
+                   },
+                )
                 
               ],
             ))
         ],
       ),
     
+    );
+  }
+}
+
+class ForgetPassWidget extends StatelessWidget {
+  const ForgetPassWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+
+        TextButton(
+          style: const ButtonStyle(tapTargetSize: MaterialTapTargetSize.shrinkWrap),
+          onPressed: (){},
+          child: const Text('¿Olvidaste tu contraseña?')
+          ),
+        const Text('/'),
+        TextButton(
+          style: const ButtonStyle(tapTargetSize: MaterialTapTargetSize.shrinkWrap),
+          onPressed: (){},
+          child: const Text('Crear cuenta')
+        ),                  ],
+    );
+  }
+}
+
+class CustomFormField extends StatelessWidget {
+
+  final IconData icon;
+  final String labelText;
+  final String helperText;
+  final List<TextInputFormatter>? inputFormatters;
+  final String? Function(String?)? validator;
+
+  const CustomFormField({Key? key, 
+    required this.icon,
+    required this.labelText,
+    required this.helperText,
+    this.inputFormatters,
+    this.validator
+    }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+
+      inputFormatters: inputFormatters,
+      validator: validator,
+      decoration: InputDecoration(
+        icon: Icon(icon),
+        iconColor: Colors.lightBlue.shade500,
+        labelText: labelText,
+        helperText: helperText,
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(20), borderSide: const BorderSide(width: 10, color: Colors.black54)),
+        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(20), borderSide: BorderSide(width: 3, color: Colors.lightBlue.shade500)),
+      ),
     );
   }
 }
@@ -171,17 +229,15 @@ class _Background extends StatelessWidget {
 }
 
 class SingUpButton extends StatelessWidget {
-  const SingUpButton({
-    Key? key,
-  }) : super(key: key);
+
+  final void Function() onPressed;
+
+  const SingUpButton({super.key, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: () {
-        
-        Navigator.pushReplacementNamed(context, 'home');
-        },
+      onPressed: onPressed,
       child: Container(
         width: 150,
         decoration: BoxDecoration(
@@ -212,3 +268,4 @@ class SingUpButton extends StatelessWidget {
       );
   }
 }
+

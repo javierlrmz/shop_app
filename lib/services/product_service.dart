@@ -21,15 +21,15 @@ class ProductService extends ChangeNotifier {
 
   Future <List<Product>>loadProducts() async {
     final url = Uri.https(_baseUrl, 'users.json');  
-    
+    print(url);
     final resp = await http.get(url);
-    final Map<String, dynamic> productsMap = await jsonDecode(resp.body);  
-    // print(resp.body);
+    final Map <String, dynamic> productsMap = await jsonDecode(resp.body);  
+    
     productsMap.forEach((key, value) {
-      
+      print('');
       final tempProduct = Product.fromMap(value);
       tempProduct.id = key;
-      // print(key);
+      print(key);
       products.add(tempProduct);
       
     });

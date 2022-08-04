@@ -84,13 +84,13 @@ class _SingForm extends StatefulWidget {
 class _SingFormState extends State<_SingForm> {
   @override
   Widget build(BuildContext context) {
-    final formKey = GlobalKey<FormState>();
+    final _formKey = GlobalKey<FormState>();
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
         children: [
           Form(
-            key: formKey,
+            key: _formKey,
             child: Column(
               children: [
                 const SizedBox(height:10),
@@ -107,8 +107,6 @@ class _SingFormState extends State<_SingForm> {
                     if (!value!.isValidEmail) {
                       return 'Ingresa un correo válido';
                     }
-                    return null;
-                    
                   },
                   
                 ),
@@ -122,7 +120,6 @@ class _SingFormState extends State<_SingForm> {
                     if (!value!.isValidPassword) {
                       return 'Ingrese una contraseña de almenos 8 caracteres';
                     }
-                    return null;
                   },
                 ),
                 const SizedBox(height: 15),
@@ -131,8 +128,8 @@ class _SingFormState extends State<_SingForm> {
                 
                 SingUpButton(
                   onPressed: () { 
-                    if (formKey.currentState!.validate()) {
-                      // print('${formKey.currentState!.validate()}');
+                    if (_formKey.currentState!.validate()) {
+                      print('${_formKey.currentState!.validate()}');
                       Navigator.pushReplacementNamed(context, 'home');
 
                     }

@@ -28,10 +28,16 @@ class HomeScreen extends StatelessWidget {
         itemCount: productList.length,
         itemBuilder: (context, i) => Padding(
           padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 5),
-          child: ProductCard(producto: productList[i]),
+          
+          child: GestureDetector(
+            onTap: () {
+              Navigator.pushNamed(context, 'product');
+
+              },
+            child: ProductCard(producto: productList[i]),
+            ),
         ),
         ),
     );
-  }
+  } 
 }
-

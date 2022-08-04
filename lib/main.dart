@@ -1,9 +1,22 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/screens/screens.dart';
 import 'package:shop_app/services/product_service.dart';
 
-void main() => runApp(const AppState());
+class MyHttpOverrides extends HttpOverrides {
+@override
+HttpClient createHttpClient(SecurityContext? context) {
+return super.createHttpClient(context)
+  ..badCertificateCallback =
+      (X509Certificate cert, String host, int port) => true; }}
+      
+void main() async { 
+  WidgetsFlutterBinding.ensureInitialized();
+  HttpOverrides.global = new MyHttpOverrides();
+  runApp(const AppState());
+  }
 
 
 class AppState extends StatelessWidget {
@@ -28,7 +41,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Material App',
-      initialRoute: 'login',
+      initialRoute: 'home',
       routes: {
         'home'      :(_) => const HomeScreen(),
         'product'   : (_) => const ProductScreen(),

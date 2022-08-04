@@ -1,4 +1,4 @@
-extension extString on String {
+extension ExtString on String {
 
   bool get isValidEmail {
     final emailRegExp = RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
@@ -10,7 +10,4 @@ extension extString on String {
     return passRegExp.hasMatch(this);
   }
   
-  bool get isNotNull {
-    return this != null;
-  }
 }

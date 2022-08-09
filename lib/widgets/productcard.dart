@@ -37,8 +37,8 @@ class ProductCard extends StatelessWidget {
               ? const Center(child: CircularProgressIndicator()) 
               : const FadeInImage(
                 fit: BoxFit.cover,
-                placeholder: NetworkImage('https://via.placeholder.com/500'),
-                image: NetworkImage('https://via.placeholder.com/500'),
+                placeholder: NetworkImage('https://thumbs.dreamstime.com/b/ninguna-imagen-de-la-u%C3%B1a-del-pulgar-placeholder-para-los-foros-blogs-y-las-p%C3%A1ginas-web-148010362.jpg'),
+                image: NetworkImage('https://thumbs.dreamstime.com/b/ninguna-imagen-de-la-u%C3%B1a-del-pulgar-placeholder-para-los-foros-blogs-y-las-p%C3%A1ginas-web-148010362.jpg'),
                 // NetworkImage('${producto.imagen}'),
               ),
             )

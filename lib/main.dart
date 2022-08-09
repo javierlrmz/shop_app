@@ -14,7 +14,7 @@ return super.createHttpClient(context)
       
 void main() async { 
   WidgetsFlutterBinding.ensureInitialized();
-  HttpOverrides.global = new MyHttpOverrides();
+  HttpOverrides.global = MyHttpOverrides();
   runApp(const AppState());
   }
 

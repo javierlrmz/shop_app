@@ -18,7 +18,7 @@ class ProductScreen extends StatelessWidget {
       
             Stack(
               children: [
-                const ProductImage(),
+                ProductImage(url: productService.selectedProduct.imagen,),
                 backButton(context),
                 cameraButton(),
               ],
@@ -83,8 +83,8 @@ class ProductForm extends StatelessWidget {
 
             TextFormField(
               decoration: const InputDecoration(
-                labelText: 'Descripción',
-                hintText: 'Descripción del artículo'
+                labelText: 'Precio',
+                hintText: '\$99.99'
               ),
             ),
             const SizedBox(height: 30,),

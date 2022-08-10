@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 
 class ProductImage extends StatelessWidget {
-  const ProductImage({Key? key}) : super(key: key);
+  
+  final String? url;
+
+  const ProductImage({super.key, required this.url});
 
   @override
   Widget build(BuildContext context) {
+
     return Container(
       width: double.infinity,
       height: 400,
@@ -12,10 +16,15 @@ class ProductImage extends StatelessWidget {
       decoration: buildDecoration(),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(20),
-        child: const FadeInImage(
+        child: url == null 
+        ? const Image(
+          image: AssetImage('placeholder.jpg'),
+          fit: BoxFit.cover,
+          ) 
+        : FadeInImage(
         fit: BoxFit.cover,
-        placeholder: NetworkImage('https://thumbs.dreamstime.com/b/ninguna-imagen-de-la-u%C3%B1a-del-pulgar-placeholder-para-los-foros-blogs-y-las-p%C3%A1ginas-web-148010362.jpg'),
-        image: NetworkImage('https://thumbs.dreamstime.com/b/ninguna-imagen-de-la-u%C3%B1a-del-pulgar-placeholder-para-los-foros-blogs-y-las-p%C3%A1ginas-web-148010362.jpg'),),
+        placeholder: const AssetImage('placeholder.jpg'),
+        image: NetworkImage(url!),),
       ),
     );
   }

@@ -33,13 +33,15 @@ class ProductCard extends StatelessWidget {
             height: 360,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20),
-              child: producto.imagen == null
-              ? const Center(child: CircularProgressIndicator()) 
-              : const FadeInImage(
+              child: producto.imagen == null 
+              ? const Image(
                 fit: BoxFit.cover,
-                placeholder: NetworkImage('https://thumbs.dreamstime.com/b/ninguna-imagen-de-la-u%C3%B1a-del-pulgar-placeholder-para-los-foros-blogs-y-las-p%C3%A1ginas-web-148010362.jpg'),
-                image: NetworkImage('https://thumbs.dreamstime.com/b/ninguna-imagen-de-la-u%C3%B1a-del-pulgar-placeholder-para-los-foros-blogs-y-las-p%C3%A1ginas-web-148010362.jpg'),
-                // NetworkImage('${producto.imagen}'),
+                image: AssetImage('placeholder.jpg')
+                )
+              : FadeInImage(
+                fit: BoxFit.cover,
+                placeholder: const AssetImage('placeholder.jpg'),
+                image: NetworkImage('${producto.imagen}'),
               ),
             )
           ),

@@ -12,9 +12,9 @@ class Product {
         required this.precio,
     });
     String? id;
-    String descripcion;
+    String  descripcion;
     String? imagen;
-    int precio;
+    int     precio;
     
 
      factory Product.fromJson(String str) => Product.fromMap(json.decode(str));
@@ -33,5 +33,12 @@ class Product {
         "imagen": imagen,
         "precio": precio, 
     };
+
+    Product copy() => Product(
+    id: id,
+    descripcion: descripcion,
+    imagen: imagen,
+    precio: precio,
+    );
 }
 

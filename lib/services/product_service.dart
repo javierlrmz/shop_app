@@ -11,6 +11,7 @@ class ProductService extends ChangeNotifier {
   final _baseUrl = 'mygymapp-6238a-default-rtdb.firebaseio.com';
   
   final List<Product> products = [];
+  late Product selectedProduct;
 
   bool isLoading = true;
 

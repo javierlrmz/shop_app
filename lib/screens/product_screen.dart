@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shop_app/services/product_service.dart';
 import 'package:shop_app/widgets/widgets.dart';
 
 class ProductScreen extends StatelessWidget {
@@ -6,6 +8,8 @@ class ProductScreen extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
+
+    final productService = Provider.of<ProductService>(context);
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(

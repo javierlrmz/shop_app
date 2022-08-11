@@ -3,8 +3,9 @@ import 'package:shop_app/models/products_model.dart';
 
 class ProductCard extends StatelessWidget {
 
-  const ProductCard ( {Key? key, required this.producto}) : super(key: key);
   final Product producto;
+
+  const ProductCard({Key? key, required this.producto}) : super(key: key);
   
   @override
   Widget build(BuildContext context) {
@@ -32,11 +33,14 @@ class ProductCard extends StatelessWidget {
             height: 360,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20),
-              child: producto.imagen == null
-              ? const Center(child: CircularProgressIndicator()) 
+              child: producto.imagen == null 
+              ? const Image(
+                fit: BoxFit.cover,
+                image: AssetImage('placeholder.jpg')
+                )
               : FadeInImage(
                 fit: BoxFit.cover,
-                placeholder: const NetworkImage('https://via.placeholder.com/500'),
+                placeholder: const AssetImage('placeholder.jpg'),
                 image: NetworkImage('${producto.imagen}'),
               ),
             )

@@ -108,7 +108,6 @@ class _SingFormState extends State<_SingForm> {
                       return 'Ingresa un correo válido';
                     }
                     return null;
-                    
                   },
                   
                 ),

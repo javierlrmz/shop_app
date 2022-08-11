@@ -10,6 +10,7 @@ class ProductScreen extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final productService = Provider.of<ProductService>(context);
+    final selectedProduct = productService.selectedProduct;
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -18,13 +19,13 @@ class ProductScreen extends StatelessWidget {
       
             Stack(
               children: [
-                ProductImage(url: productService.selectedProduct.imagen,),
+                ProductImage(url: selectedProduct.imagen,),
                 backButton(context),
                 cameraButton(),
               ],
             ),
             const SizedBox(height: 10,),
-            const ProductForm()
+            ProductForm(descripcion: selectedProduct.descripcion, precio: selectedProduct.precio,)
           ],
         ),
       ),
@@ -57,9 +58,10 @@ class ProductScreen extends StatelessWidget {
 }
 
 class ProductForm extends StatelessWidget {
-  const ProductForm({
-    Key? key,
-  }) : super(key: key);
+  final String? descripcion;
+  final int? precio;
+
+  const ProductForm({super.key, this.descripcion, this.precio});
 
   @override
   Widget build(BuildContext context) {
@@ -77,6 +79,7 @@ class ProductForm extends StatelessWidget {
                 labelText: 'Descripción',
                 hintText: 'Descripción del artículo'
               ),
+              initialValue: descripcion,
             ),
 
             const SizedBox(height: 30,),
@@ -86,6 +89,7 @@ class ProductForm extends StatelessWidget {
                 labelText: 'Precio',
                 hintText: '\$99.99'
               ),
+              initialValue: '\$$precio',
             ),
             const SizedBox(height: 30,),
             SwitchListTile.adaptive(

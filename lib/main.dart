@@ -5,6 +5,8 @@ import 'package:provider/provider.dart';
 import 'package:shop_app/screens/screens.dart';
 import 'package:shop_app/services/product_service.dart';
 
+import 'theme/app_theme.dart';
+
 class MyHttpOverrides extends HttpOverrides {
 @override
 HttpClient createHttpClient(SecurityContext? context) {
@@ -47,6 +49,7 @@ class MyApp extends StatelessWidget {
         'product'   : (_) => const ProductScreen(),
         'login'     : (_) => const LoginScreen()
       },
+      theme: AppTheme().appTheme,
     );
   }
 }

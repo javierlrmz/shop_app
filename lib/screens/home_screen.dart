@@ -18,7 +18,7 @@ class HomeScreen extends StatelessWidget {
         title: const Text('Home'),
         ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.black54,
+        
         child: const Icon(Icons.add_to_photos_rounded),
         onPressed: () => Navigator.pushNamed(context, 'product'),
       ),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_app/models/products_model.dart';
+import 'package:shop_app/services/product_form_service.dart';
 import 'package:shop_app/services/product_service.dart';
 import 'package:shop_app/widgets/widgets.dart';
 
@@ -11,22 +13,55 @@ class ProductScreen extends StatelessWidget {
 
     final productService = Provider.of<ProductService>(context);
     final selectedProduct = productService.selectedProduct;
+    
+    return ChangeNotifierProvider(create: (_) => ProductFormService(productService.selectedProduct),
+    child: _ProductScrenBody(selectedProduct: selectedProduct));
+  }
+}
+
+class _ProductScrenBody extends StatelessWidget {
+  const _ProductScrenBody({
+    Key? key,
+    required this.selectedProduct,
+  }) : super(key: key);
+
+  final Product selectedProduct;
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
+      body: SafeArea(
+        
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: Column(
+            children: [
+        
+              Stack(
+                children: [
       
+                  ProductImage(url: selectedProduct.imagen,),
       
-            Stack(
-              children: [
-                ProductImage(url: selectedProduct.imagen,),
-                backButton(context),
-                cameraButton(),
-              ],
-            ),
-            const SizedBox(height: 10,),
-            ProductForm(descripcion: selectedProduct.descripcion, precio: selectedProduct.precio,)
-          ],
+                  Positioned(
+                    top: 20,
+                    left: 20,
+                    child: IconButton(
+                      onPressed: (){Navigator.pop(context);},
+                      icon: const Icon(Icons.arrow_back_ios, size: 30,))),
+                  
+                  Positioned(
+                    top: 20,
+                    right: 20,
+                    child: IconButton(
+                      onPressed: (){},
+                      icon: const Icon(Icons.camera_alt_rounded, size: 30,)))
+      
+                ],
+              ),
+              const SizedBox(height: 10,),
+              const ProductForm()
+            ],
+          ),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
@@ -36,35 +71,16 @@ class ProductScreen extends StatelessWidget {
         )
       );
   }
-
-  Positioned cameraButton() {
-    return Positioned(
-          top: 20,
-          right: 20,
-          child: IconButton(
-            onPressed: (){},
-            icon: const Icon(Icons.camera_alt_rounded, size: 30,)));
-  }
-
-  Positioned backButton(BuildContext context) {
-  
-    return Positioned(
-          top: 20,
-          left: 20,
-          child: IconButton(
-            onPressed: (){Navigator.pop(context);},
-            icon: const Icon(Icons.arrow_back_ios, size: 30,)));
-  }
 }
 
 class ProductForm extends StatelessWidget {
-  final String? descripcion;
-  final int? precio;
-
-  const ProductForm({super.key, this.descripcion, this.precio});
+  const ProductForm({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+
+  final productform = Provider.of<ProductFormService>(context);
+  final product = productform.product; 
     return Container(
       
       margin: const EdgeInsets.symmetric(horizontal: 10),
@@ -79,7 +95,7 @@ class ProductForm extends StatelessWidget {
                 labelText: 'Descripción',
                 hintText: 'Descripción del artículo'
               ),
-              initialValue: descripcion,
+              initialValue: product.descripcion
             ),
 
             const SizedBox(height: 30,),
@@ -89,7 +105,7 @@ class ProductForm extends StatelessWidget {
                 labelText: 'Precio',
                 hintText: '\$99.99'
               ),
-              initialValue: '\$$precio',
+              initialValue: '\$${product.precio}',
             ),
             const SizedBox(height: 30,),
             SwitchListTile.adaptive(

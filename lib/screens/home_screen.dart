@@ -15,7 +15,7 @@ class HomeScreen extends StatelessWidget {
     final List productList = productService.products;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home'),
+        title: const Text('Productos'),
         ),
       floatingActionButton: FloatingActionButton(
         

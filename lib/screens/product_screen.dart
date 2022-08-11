@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/models/products_model.dart';
 import 'package:shop_app/services/product_form_service.dart';
@@ -47,14 +48,14 @@ class _ProductScrenBody extends StatelessWidget {
                     left: 20,
                     child: IconButton(
                       onPressed: (){Navigator.pop(context);},
-                      icon: const Icon(Icons.arrow_back_ios, size: 30,))),
+                      icon: const Icon(Icons.arrow_back_ios, size: 30, color: Colors.white,))),
                   
                   Positioned(
                     top: 20,
                     right: 20,
                     child: IconButton(
                       onPressed: (){},
-                      icon: const Icon(Icons.camera_alt_rounded, size: 30,)))
+                      icon: const Icon(Icons.camera_alt_rounded, size: 30, color: Colors.white,)))
       
                 ],
               ),
@@ -66,8 +67,10 @@ class _ProductScrenBody extends StatelessWidget {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.edit),
-        onPressed: (){}
+        child: const Icon(Icons.save),
+        onPressed: (){
+
+        }
         )
       );
   }
@@ -95,7 +98,8 @@ class ProductForm extends StatelessWidget {
                 labelText: 'Descripción',
                 hintText: 'Descripción del artículo'
               ),
-              initialValue: product.descripcion
+              initialValue: product.descripcion,
+              
             ),
 
             const SizedBox(height: 30,),
@@ -106,6 +110,10 @@ class ProductForm extends StatelessWidget {
                 hintText: '\$99.99'
               ),
               initialValue: '\$${product.precio}',
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(RegExp(r'^(\d+)?\.?\d{0,2}'))
+
+              ],
             ),
             const SizedBox(height: 30,),
             SwitchListTile.adaptive(

@@ -30,6 +30,8 @@ class _ProductScrenBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final productForm = Provider.of<ProductFormService>(context);
     return Scaffold(
       body: SafeArea(
         
@@ -69,6 +71,8 @@ class _ProductScrenBody extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.save),
         onPressed: (){
+        
+        productForm.isValidForm();
 
         }
         )
@@ -90,39 +94,56 @@ class ProductForm extends StatelessWidget {
       decoration: buildDecoration(),
       child: Padding(
         padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-
-            TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'Descripción',
-                hintText: 'Descripción del artículo'
+        child: Form(
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          key: productform.formkey,
+          child: Column(
+            children: [
+        
+              TextFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Descripción',
+                  hintText: 'Descripción del artículo'
+                ),
+                initialValue: product.descripcion,
+                onChanged: ( value ) => product.descripcion = value,
+                validator:  ( value ) {
+                  if ( value == null || value.isEmpty) {
+                    return 'La descripción es obligatoria';
+                  }
+                },
+                
               ),
-              initialValue: product.descripcion,
+        
+              const SizedBox(height: 30,),
+        
+              TextFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Precio',
+                  hintText: '\$99.99'
+                ),
+                initialValue: '\$${product.precio}',
+                onChanged: ( value ) {
+                  if (double.tryParse(value) == null){
+                    product.precio = 0;
+                  } else {
+                    product.precio = int.parse(value);
+                  }
+                },
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp(r'^(\d+)?\.?\d{0,2}'))
+        
+                ],
+              ),
+              const SizedBox(height: 30,),
+              SwitchListTile.adaptive(
+                title: const Text('Disponible'),
+                value: true, 
+                onChanged: (value){}
+                ),
               
-            ),
-
-            const SizedBox(height: 30,),
-
-            TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'Precio',
-                hintText: '\$99.99'
-              ),
-              initialValue: '\$${product.precio}',
-              inputFormatters: [
-                FilteringTextInputFormatter.allow(RegExp(r'^(\d+)?\.?\d{0,2}'))
-
-              ],
-            ),
-            const SizedBox(height: 30,),
-            SwitchListTile.adaptive(
-              title: const Text('Disponible'),
-              value: true, 
-              onChanged: (value){}
-              ),
-            
-          ],
+            ],
+          ),
         ),
       ),
     );

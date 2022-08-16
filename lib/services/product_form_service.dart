@@ -10,6 +10,11 @@ class ProductFormService extends ChangeNotifier {
   ProductFormService(this.product);
 
   isValidForm(){
+    
+    print(product.descripcion);
+
+    print(product.precio);
+    
 
     return formkey.currentState?.validate() ?? false;
   }

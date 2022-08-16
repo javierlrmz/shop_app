@@ -35,7 +35,8 @@ class ProductService extends ChangeNotifier {
       
     });
     
-    return products; 
-  }
+    return products;
 
+  }
+  
 }

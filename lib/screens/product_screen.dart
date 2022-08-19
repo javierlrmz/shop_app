@@ -16,17 +16,16 @@ class ProductScreen extends StatelessWidget {
     final selectedProduct = productService.selectedProduct;
     
     return ChangeNotifierProvider(create: (_) => ProductFormService(productService.selectedProduct),
-    child: _ProductScrenBody(selectedProduct: selectedProduct));
+    child: _ProductScrenBody(selectedProduct: selectedProduct, productService: productService,));
   }
 }
 
 class _ProductScrenBody extends StatelessWidget {
-  const _ProductScrenBody({
-    Key? key,
-    required this.selectedProduct,
-  }) : super(key: key);
 
   final Product selectedProduct;
+  final ProductService productService;
+
+  const _ProductScrenBody({required this.selectedProduct, required this.productService});
 
   @override
   Widget build(BuildContext context) {
@@ -70,9 +69,11 @@ class _ProductScrenBody extends StatelessWidget {
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.save),
-        onPressed: (){
+        onPressed: () async {
         
-        productForm.isValidForm();
+          if ( !productForm.isValidForm()) return;
+          
+          await productService.saveOrCreateProduct(productForm.product);
 
         }
         )
@@ -111,6 +112,7 @@ class ProductForm extends StatelessWidget {
                   if ( value == null || value.isEmpty) {
                     return 'La descripción es obligatoria';
                   }
+                  return null;
                 },
                 
               ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/models/products_model.dart';
 import 'package:shop_app/services/product_form_service.dart';
@@ -55,8 +56,25 @@ class _ProductScrenBody extends StatelessWidget {
                     top: 20,
                     right: 20,
                     child: IconButton(
-                      onPressed: (){},
-                      icon: const Icon(Icons.camera_alt_rounded, size: 30, color: Colors.white,)))
+                      icon: const Icon(Icons.camera_alt_rounded, size: 30, color: Colors.white,),
+                      onPressed: () async {
+                        
+                        final picker = new ImagePicker();
+                        final XFile? pickedFile = await picker.pickImage(
+                          source: ImageSource.camera,
+                          imageQuality: 100
+                        );
+
+                        if (pickedFile == null) {
+                          return;
+                        }
+                        print('Imagen: ${pickedFile.path}');
+                        productService.updateSelectedProductImage(pickedFile.path);
+
+
+                        }
+                      )
+                    )
       
                 ],
               ),
@@ -74,6 +92,8 @@ class _ProductScrenBody extends StatelessWidget {
           if ( !productForm.isValidForm()) return;
           
           FocusManager.instance.primaryFocus?.unfocus();
+          
+          final String? imageUrl = await productService.uploadImage();
 
           await productService.saveOrCreateProduct(productForm.product);
 

@@ -70,9 +70,11 @@ class _ProductScrenBody extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.save),
         onPressed: () async {
-        
+          
           if ( !productForm.isValidForm()) return;
           
+          FocusManager.instance.primaryFocus?.unfocus();
+
           await productService.saveOrCreateProduct(productForm.product);
 
         }

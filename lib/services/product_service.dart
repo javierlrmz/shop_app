@@ -99,7 +99,7 @@ class ProductService extends ChangeNotifier {
     isSaving = true;
     notifyListeners();
 
-    final url = Uri.parse('https://api.cloudinary.com/v1_1/dx0pryfzn/image/upload?upload_preset=autwc6pa');
+    final url = Uri.parse('https://api.cloudinary.com/v1_1/dljxeqlpg/image/upload?upload_preset=garlxkkl');
     
     final imageUploadRequest = http.MultipartRequest('POST', url);
 
@@ -110,6 +110,12 @@ class ProductService extends ChangeNotifier {
     final streamResponse = await imageUploadRequest.send();
     final resp = await http.Response.fromStream(streamResponse);
 
-    print( resp.body );
+    // print(resp.body);
+
+    newPictureFile = null;
+
+    final decodedData = json.decode(resp.body);
+
+    return decodedData['secure_url'];
   }
 }

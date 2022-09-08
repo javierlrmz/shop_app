@@ -1,14 +1,18 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shop_app/extensions/validate_extension.dart';
+import 'package:shop_app/screens/home_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
 
-    return Scaffold(
+    return FirebaseAuth.instance.currentUser != null
+    ? const HomeScreen()
+    : Scaffold(
       body: Stack(
         children: const [
           // FONDO

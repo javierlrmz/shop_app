@@ -8,6 +8,7 @@ import 'package:shop_app/services/firebase_auth_service.dart';
 
 class SingUpScreen extends StatelessWidget {
   const SingUpScreen({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
 
@@ -85,6 +86,16 @@ class _SingForm extends StatefulWidget {
 }
 
 class _SingFormState extends State<_SingForm> {
+  
+  final textController = TextEditingController();
+  
+  @override
+  void dispose() {
+    // Limpia el controlador cuando el Widget se descarte
+    textController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -106,6 +117,7 @@ class _SingFormState extends State<_SingForm> {
                 const SizedBox(height: 30),
                 // CORREO
                 CustomFormField(
+                  controller: textController,
                   helperText: 'Email@email.com',
                   icon: Icons.email,
                   labelText: 'Ingrese su correo electronico',
@@ -115,10 +127,13 @@ class _SingFormState extends State<_SingForm> {
                     print(authService.emailAddress);
                     
                   },
-                  validator: (value){
+                  validator: (value, ){
                     if (!value!.isValidEmail) {
                       return 'Ingresa un correo válido';
                     }
+
+                    authService.emailAddress = textController.text;
+                    print(authService.emailAddress);
                     return null;
                   },
                   
@@ -193,7 +208,8 @@ class ForgetPassWidget extends StatelessWidget {
 }
 
 class CustomFormField extends StatelessWidget {
-
+  
+  final TextEditingController? controller;
   final IconData icon;
   final String labelText;
   final String helperText;
@@ -206,12 +222,13 @@ class CustomFormField extends StatelessWidget {
     required this.labelText,
     required this.helperText,
     this.inputFormatters,
-    this.validator, this.onChanged
+    this.validator, this.onChanged, this.controller
     }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: controller,
       onChanged: onChanged,
       inputFormatters: inputFormatters,
       validator: validator,

@@ -4,8 +4,20 @@ import 'package:flutter/material.dart';
 
 class FirebaseAuthService extends ChangeNotifier {
   
-  var emailAddress;
-  var password;
+  var _emailAddress;
+
+  get emailAddress => _emailAddress;
+
+  set emailAddress(emailAddress) {
+    _emailAddress = emailAddress;
+  }
+  var _password;
+
+  get password => _password;
+
+  set password(password) {
+    _password = password;
+  }
   
   Future createAccount() async {
     
@@ -30,6 +42,8 @@ class FirebaseAuthService extends ChangeNotifier {
     } catch (e) {
       print(e);
     }
+    
+  notifyListeners();
   }
 
 }

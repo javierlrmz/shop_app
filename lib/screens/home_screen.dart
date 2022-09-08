@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/models/products_model.dart';
@@ -16,6 +17,16 @@ class HomeScreen extends StatelessWidget {
     final List productList = productService.products;
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          IconButton( 
+            icon: const Icon(Icons.logout_rounded), 
+            onPressed: () {
+              print(FirebaseAuth.instance.currentUser?.uid);
+              FirebaseAuth.instance.signOut();
+              print(              FirebaseAuth.instance.signOut());
+              Navigator.pushReplacementNamed(context, 'login');
+              },
+            )],
         title: const Text('Productos'),
         ),
       floatingActionButton: FloatingActionButton(

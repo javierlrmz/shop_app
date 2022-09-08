@@ -6,7 +6,7 @@ extension ExtString on String {
   }
 
   bool get isValidPassword {
-    final passRegExp = RegExp (r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
+    final passRegExp = RegExp (r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$');
     return passRegExp.hasMatch(this);
   }
   

@@ -1,10 +1,13 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'package:shop_app/extensions/validate_extension.dart';
+import 'package:shop_app/services/firebase_auth_service.dart';
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class SingUpScreen extends StatelessWidget {
+  const SingUpScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
 
@@ -13,7 +16,7 @@ class LoginScreen extends StatelessWidget {
         children: const [
           // FONDO
           _Background(),
-          // SlingeChild
+          // SlingeChild ---- PANTALLA 
           ScrollArea(),
         ]
       ),
@@ -34,7 +37,7 @@ class ScrollArea extends StatelessWidget {
           children: [
             
             SizedBox(height: mediaSize.height * 0.1),
-            // TARJETA
+            // ---------------CARD----------------------------
             ElasticIn(child: _LoginCard()),
 
             const SizedBox(height: 30),
@@ -74,7 +77,7 @@ class _LoginCard extends StatelessWidget {
     );
   }
 }
-
+//==================== SCREEN CARD ===============================
 class _SingForm extends StatefulWidget {
 
   @override
@@ -84,6 +87,9 @@ class _SingForm extends StatefulWidget {
 class _SingFormState extends State<_SingForm> {
   @override
   Widget build(BuildContext context) {
+
+    final authService = Provider.of<FirebaseAuthService>(context);
+
     final formKey = GlobalKey<FormState>();
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20),
@@ -94,8 +100,8 @@ class _SingFormState extends State<_SingForm> {
             child: Column(
               children: [
                 const SizedBox(height:20),
-                const Icon(Icons.person_pin, size: 100, color: Colors.amber,),
-                const Text('Iniciar Sesión', 
+                const Icon(Icons.person_pin, size: 100,),
+                const Text('Crear cuenta', 
                   style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
                 const SizedBox(height: 30),
                 // CORREO
@@ -103,6 +109,12 @@ class _SingFormState extends State<_SingForm> {
                   helperText: 'Email@email.com',
                   icon: Icons.email,
                   labelText: 'Ingrese su correo electronico',
+                  onChanged: ( value ){
+
+                    authService.emailAddress = value;
+                    print(authService.emailAddress);
+                    
+                  },
                   validator: (value){
                     if (!value!.isValidEmail) {
                       return 'Ingresa un correo válido';
@@ -117,6 +129,11 @@ class _SingFormState extends State<_SingForm> {
                   helperText: '******',
                   icon: Icons.lock_open_sharp,
                   labelText: 'Ingrese su contraseña',
+                  onChanged: ( value ){
+                    authService.password = value;
+                    print('FIREBASE');
+                    print(authService.password);
+                  },
                   validator: (value){
                     if (!value!.isValidPassword) {
                       return 'Ingrese una contraseña de almenos 8 caracteres';
@@ -132,6 +149,7 @@ class _SingFormState extends State<_SingForm> {
                   onPressed: () { 
                     if (formKey.currentState!.validate()) {
                       // print('${formKey.currentState!.validate()}');
+                      authService.createAccount();
                       
                       Navigator.pushReplacementNamed(context, 'home');
 
@@ -167,8 +185,8 @@ class ForgetPassWidget extends StatelessWidget {
         const Text('/'),
         TextButton(
           style: const ButtonStyle(tapTargetSize: MaterialTapTargetSize.shrinkWrap),
-          onPressed: () => Navigator.pushReplacementNamed(context, 'singup'),
-          child: const Text('Crear cuenta')
+          onPressed: () => Navigator.pushReplacementNamed(context, 'login'),
+          child: const Text('Ya tengo cuenta')
         ),                  ],
     );
   }
@@ -181,19 +199,20 @@ class CustomFormField extends StatelessWidget {
   final String helperText;
   final List<TextInputFormatter>? inputFormatters;
   final String? Function(String?)? validator;
-
+  final void Function(String)? onChanged;
+  
   const CustomFormField({Key? key, 
     required this.icon,
     required this.labelText,
     required this.helperText,
     this.inputFormatters,
-    this.validator
+    this.validator, this.onChanged
     }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-
+      onChanged: onChanged,
       inputFormatters: inputFormatters,
       validator: validator,
       decoration: InputDecoration(

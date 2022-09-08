@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/screens/screens.dart';
+import 'package:shop_app/screens/singup_screen.dart';
+import 'package:shop_app/services/firebase_auth_service.dart';
 import 'package:shop_app/services/product_service.dart';
 
 import 'theme/app_theme.dart';
@@ -29,6 +31,7 @@ class AppState extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => ProductService()),
+        ChangeNotifierProvider(create: (_) => FirebaseAuthService())
       ],
       child: const MyApp(),
       );
@@ -43,11 +46,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Material App',
-      initialRoute: 'home',
+      initialRoute: 'login',
       routes: {
-        'home'      :(_) => const HomeScreen(),
+        'home'      : (_) => const HomeScreen(),
         'product'   : (_) => const ProductScreen(),
-        'login'     : (_) => const LoginScreen()
+        'login'     : (_) => const LoginScreen(),
+        'singup'    : (_) => const SingUpScreen()
       },
       theme: AppTheme().appTheme,
     );
